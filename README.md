@@ -85,15 +85,16 @@ console.log(res)
 
 <a name="caller"></a>
 
-### caller(proto, name, options) ⇒ <code>Object</code>
+### caller(host, proto, name, options) ⇒ <code>Object</code>
 Create client isntance.
 
 **Kind**: global function  
 
 | Param | Type | Description |
 | --- | --- | --- |
+| host | <code>String</code> | The host to connect to |
 | proto | <code>String</code> &#124; <code>Object</code> | Path to the protocol buffer definition file or                              the static client constructor object itself |
-| name | <code>Object</code> | In case of proto path the name of the service as defined in the proto definition. |
+| name | <code>String</code> | In case of proto path the name of the service as defined in the proto definition. |
 | options | <code>Object</code> | Options to be passed to the gRPC client constructor |
 
 **Example** *(Create client dynamically)*  

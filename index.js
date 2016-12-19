@@ -8,9 +8,10 @@ module.exports = caller
 
 /**
  * Create client isntance.
+ * @param {String} host - The host to connect to
  * @param {String|Object} proto Path to the protocol buffer definition file or
  *                              the static client constructor object itself
- * @param {Object} name - In case of proto path the name of the service as defined in the proto definition.
+ * @param {String} name - In case of proto path the name of the service as defined in the proto definition.
  * @param {Object} options - Options to be passed to the gRPC client constructor
  * @returns {Object}
  *
