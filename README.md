@@ -118,6 +118,7 @@ Utility helper function to create <code>Metadata</code> object from plain Javasc
 See <code>grpc-create-metadata</code> module.
 
 **Kind**: static property of <code>[caller](#caller)</code>  
+
 ## License
 
   Apache-2.0
