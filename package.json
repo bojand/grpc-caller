@@ -1,0 +1,59 @@
+{
+  "name": "grpc-caller",
+  "version": "0.0.0",
+  "description": "An improved Node.js gRPC client",
+  "main": "index.js",
+  "scripts": {
+    "test": "ava -v",
+    "docs": "jsdoc2md index.js --heading-depth 3 --template readme.hbs | md-wrap-code > README.md"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bojand/grpc-caller.git"
+  },
+  "author": {
+    "name": "Bojan D.",
+    "email": "dbojan@gmail.com"
+  },
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/bojand/grpc-caller/issues"
+  },
+  "homepage": "https://github.com/bojand/grpc-caller",
+  "keywords": [
+    "protocol buffer",
+    "protobuf",
+    "grpc",
+    "client"
+  ],
+  "dependencies": {
+    "grpc": "^1.0.1",
+    "lodash": "^4.17.2",
+    "promisify-call": "^2.0.0",
+    "grpc-create-metadata": "^1.0.0",
+    "grpc-inspect":  "^0.1.0"
+  },
+  "devDependencies": {
+    "async": "^2.1.4",
+    "ava": "^0.17.0",
+    "babel-eslint": "^7.1.1",
+    "google-protobuf": "^3.0.0",
+    "jsdoc-to-markdown": "^2.0.1",
+    "md-wrap-code": "^0.1.1",
+    "standard": "^8.5.0"
+  },
+  "directories": {
+    "test": "test"
+  },
+  "standard": {
+    "parser": "babel-eslint"
+  },
+  "ava": {
+    "files": [
+      "test/*.test.js"
+    ]
+  },
+  "engines" : {
+    "node" : ">=6.9.0"
+  }
+}
