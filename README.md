@@ -2,6 +2,9 @@
 
 An improved [gRPC](http://www.grpc.io) client.
 
+[![npm version](https://img.shields.io/npm/v/grpc-caller.svg?style=flat-square)](https://www.npmjs.com/package/grpc-caller)
+[![build status](https://img.shields.io/travis/bojand/grpc-caller/master.svg?style=flat-square)](https://travis-ci.org/bojand/grpc-caller)
+
 #### Features
 
 * Promisifies request / response calls if no callback is supplied
