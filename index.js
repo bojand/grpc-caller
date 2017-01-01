@@ -83,8 +83,22 @@ function caller (host, proto, name, options) {
           if (_.isPlainObject(metadata) && metadata instanceof grpc.Metadata === false) {
             metadata = create(metadata)
           }
-          const args = _.compact([metadata, options, fn])
-          return v.call(this, ...args)
+          if (fn) { // normal call
+            const args = _.compact([metadata, options, fn])
+            return v.call(this, ...args)
+          } else { // dual return promsified call with return { call, res }
+            const r = {}
+            const p = new Promise((resolve, reject) => {
+              const args = _.compact([metadata, options, fn])
+              args.push((err, result) => {
+                if (err) reject(err)
+                else resolve(result)
+              })
+              r.call = v.call(this, ...args)
+            })
+            r.res = p
+            return r
+          }
         }
       } else if (v.responseStream && v.requestStream) {
         clientProto[k] = function (metadata, options) {

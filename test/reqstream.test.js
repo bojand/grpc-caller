@@ -89,11 +89,76 @@ test.cb('call service using just an argument', t => {
   })
 })
 
+test.cb('promised call service using just an argument', t => {
+  t.plan(4)
+  const { call, res } = client.writeStuff()
+  res.then(res => {
+    t.truthy(res)
+    t.truthy(res.message)
+    t.falsy(res.metadata)
+    t.is(res.message, '1 foo:2 bar:3 asd:4 qwe:5 rty:6 zxc:6')
+    t.end()
+  })
+
+  async.eachSeries(data, (d, asfn) => {
+    call.write(d)
+    _.delay(asfn, _.random(50, 150))
+  }, () => {
+    call.end()
+  })
+})
+
+test('call service using just an argument', async t => {
+  t.plan(4)
+
+  async function writeStuff () {
+    const { call, res } = client.writeStuff()
+
+    async.eachSeries(data, (d, asfn) => {
+      call.write(d)
+      _.delay(asfn, _.random(50, 150))
+    }, () => {
+      call.end()
+    })
+
+    return res
+  }
+
+  const result = await writeStuff()
+  t.truthy(result)
+  t.truthy(result.message)
+  t.falsy(result.metadata)
+  t.is(result.message, '1 foo:2 bar:3 asd:4 qwe:5 rty:6 zxc:6')
+})
+
 test.cb('call service with metadata as plain object', t => {
   t.plan(6)
   const ts = new Date().getTime()
   const call = client.writeStuff({ requestId: 'bar-123', timestamp: ts }, (err, res) => {
     t.ifError(err)
+    t.truthy(res)
+    t.truthy(res.message)
+    t.is(res.message, '1 foo:2 bar:3 asd:4 qwe:5 rty:6 zxc:6')
+    t.truthy(res.metadata)
+    const metadata = JSON.parse(res.metadata)
+    const expected = { requestid: 'bar-123', timestamp: ts.toString() }
+    t.deepEqual(metadata, expected)
+    t.end()
+  })
+
+  async.eachSeries(data, (d, asfn) => {
+    call.write(d)
+    _.delay(asfn, _.random(50, 150))
+  }, () => {
+    call.end()
+  })
+})
+
+test.cb('promised call service with metadata as plain object', t => {
+  t.plan(5)
+  const ts = new Date().getTime()
+  const { call, res } = client.writeStuff({ requestId: 'bar-123', timestamp: ts })
+  res.then(res => {
     t.truthy(res)
     t.truthy(res.message)
     t.is(res.message, '1 foo:2 bar:3 asd:4 qwe:5 rty:6 zxc:6')
@@ -143,6 +208,29 @@ test.cb('call service with metadata as plain object and options object', t => {
   const ts = new Date().getTime()
   const call = client.writeStuff({ requestId: 'bar-123', timestamp: ts }, { some: 'blah' }, (err, res) => {
     t.ifError(err)
+    t.truthy(res)
+    t.truthy(res.message)
+    t.is(res.message, '1 foo:2 bar:3 asd:4 qwe:5 rty:6 zxc:6')
+    t.truthy(res.metadata)
+    const metadata = JSON.parse(res.metadata)
+    const expected = { requestid: 'bar-123', timestamp: ts.toString() }
+    t.deepEqual(metadata, expected)
+    t.end()
+  })
+
+  async.eachSeries(data, (d, asfn) => {
+    call.write(d)
+    _.delay(asfn, _.random(50, 150))
+  }, () => {
+    call.end()
+  })
+})
+
+test.cb('promised call service with metadata as plain object and options object', t => {
+  t.plan(5)
+  const ts = new Date().getTime()
+  const { call, res } = client.writeStuff({ requestId: 'bar-123', timestamp: ts }, { some: 'blah' })
+  res.then(res => {
     t.truthy(res)
     t.truthy(res.message)
     t.is(res.message, '1 foo:2 bar:3 asd:4 qwe:5 rty:6 zxc:6')

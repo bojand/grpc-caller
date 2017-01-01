@@ -8,6 +8,7 @@ An improved [gRPC](http://www.grpc.io) client.
 #### Features
 
 * Promisifies request / response calls if no callback is supplied
+* Promisifies request stream / response calls if no callback is supplied
 * Automatically converts plain javascript object to metadata in calls.
 
 ## Installation
@@ -42,6 +43,53 @@ Which means means you can use is with `async / await`
 
 ```js
 const res = await client.sayHello({ name: 'Bob' })
+console.log(res)
+```
+
+#### Improved request stream / response calls
+
+Lets say we have a remote call `writeStuff` that accepts a stream of messages
+and returns some result based on processing of the stream input.
+
+Works as standard gRPC client:
+
+```js
+const call = client.writeStuff((err, res) => {
+  if (err) console.error(err)
+  console.log(res)
+})
+
+// ... write stuff to call
+```
+
+If no callback is provided we promisify the call such that it returns an **object
+with two properties** `call` and `res` such that:
+
+* `call` - the standard stream to write to as returned normally by grpc
+* `res` - a promise that's resolved / rejected when the call is finished, in place of the callback.
+
+Using destructuring we can do something like:
+
+```js
+const { call, res } = client.writeStuff()
+res
+  .then(res => console.log(res))
+  .catch(err => console.error(err))
+
+// ... write stuff to call
+```
+
+This means we can abstract the whole operation into a nicer promise returning
+async function to use with `async / await`
+
+```js
+async function writeStuff() {
+  const { call, res } = client.writeStuff()
+  // ... write stuff to call
+  return res
+}
+
+const res = await writeStuff()
 console.log(res)
 ```
 
