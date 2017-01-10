@@ -26,7 +26,7 @@ module.exports = caller
 function caller (host, proto, name, options) {
   let Ctor
   if (_.isString(proto)) {
-    const loaded = grpc.load(proto, options)
+    const loaded = grpc.load(proto)
     const descriptor = gi(loaded)
     if (!descriptor) {
       throw new Error(String.raw `Error parsing protocol buffer`)
