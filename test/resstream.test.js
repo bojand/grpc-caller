@@ -58,7 +58,7 @@ test.before('should dynamically create service', t => {
   }
 
   const server = new grpc.Server()
-  server.addProtoService(argProto.ArgService.service, { listStuff })
+  server.addService(argProto.ArgService.service, { listStuff })
   server.bind(DYNAMIC_HOST, grpc.ServerCredentials.createInsecure())
   server.start()
   apps.push(server)
