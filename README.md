@@ -4,6 +4,8 @@ An improved [gRPC](http://www.grpc.io) client.
 
 [![npm version](https://img.shields.io/npm/v/grpc-caller.svg?style=flat-square)](https://www.npmjs.com/package/grpc-caller)
 [![build status](https://img.shields.io/travis/bojand/grpc-caller/master.svg?style=flat-square)](https://travis-ci.org/bojand/grpc-caller)
+[![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg?style=flat-square)](https://standardjs.com)
+[![License](https://img.shields.io/github/license/bojand/grpc-caller.svg?style=flat-square)](https://raw.githubusercontent.com/bojand/grpc-caller/master/LICENSE)
 
 #### Features
 
@@ -147,7 +149,7 @@ Create client isntance.
 | Param | Type | Description |
 | --- | --- | --- |
 | host | <code>String</code> | The host to connect to |
-| proto | <code>String</code> &#124; <code>Object</code> | Path to the protocol buffer definition file or                              the static client constructor object itself |
+| proto | <code>String</code> \| <code>Object</code> | Path to the protocol buffer definition file or                              the static client constructor object itself |
 | name | <code>String</code> | In case of proto path the name of the service as defined in the proto definition. |
 | options | <code>Object</code> | Options to be passed to the gRPC client constructor |
 
@@ -171,7 +173,7 @@ const client = caller('localhost:50051', services.GreeterClient)
 Utility helper function to create <code>Metadata</code> object from plain Javascript object.
 See <code>grpc-create-metadata</code> module.
 
-**Kind**: static property of <code>[caller](#caller)</code>  
+**Kind**: static property of [<code>caller</code>](#caller)  
 ## License
 
   Apache-2.0
