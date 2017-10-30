@@ -6,6 +6,9 @@ const grpc = require('grpc')
 const caller = require('../')
 
 const PROTO_PATH = path.resolve(__dirname, './protos/helloworld.proto')
+const PROTO_ROOT = path.join(__dirname, 'protos')
+const PROTO_FILE = 'helloworld.proto'
+
 const helloproto = grpc.load(PROTO_PATH).helloworld
 
 const apps = []
@@ -62,6 +65,18 @@ test.cb('call dynamic service using callback', t => {
   })
 })
 
+test.cb('call dynamic service using callback and root, file', t => {
+  t.plan(4)
+  const client = caller(DYNAMIC_HOST, { root: PROTO_ROOT, file: PROTO_FILE }, 'Greeter')
+  client.sayHello({ name: 'Root' }, (err, response) => {
+    t.ifError(err)
+    t.truthy(response)
+    t.truthy(response.message)
+    t.is(response.message, 'Hello Root')
+    t.end()
+  })
+})
+
 test.cb('call static service using callback', t => {
   t.plan(5)
 
@@ -90,6 +105,15 @@ test('call dynamic service using async', async t => {
   t.truthy(response)
   t.truthy(response.message)
   t.is(response.message, 'Hello Bob')
+})
+
+test('call dynamic service using async and root, file', async t => {
+  t.plan(3)
+  const client = caller(DYNAMIC_HOST, { root: PROTO_ROOT, file: PROTO_FILE }, 'Greeter')
+  const response = await client.sayHello({ name: 'Root' })
+  t.truthy(response)
+  t.truthy(response.message)
+  t.is(response.message, 'Hello Root')
 })
 
 test('call static service using async', async t => {
