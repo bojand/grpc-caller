@@ -149,7 +149,7 @@ Create client isntance.
 | Param | Type | Description |
 | --- | --- | --- |
 | host | <code>String</code> | The host to connect to |
-| proto | <code>String</code> \| <code>Object</code> | Path to the protocol buffer definition file or                              the static client constructor object itself |
+| proto | <code>String</code> \| <code>Object</code> | Path to the protocol buffer definition file or                              Object specifying <code>root</code> directory and <code>file</code> to load or                              the static client constructor object itself |
 | name | <code>String</code> | In case of proto path the name of the service as defined in the proto definition. |
 | options | <code>Object</code> | Options to be passed to the gRPC client constructor |
 
@@ -158,6 +158,10 @@ Create client isntance.
 ```js
 const PROTO_PATH = path.resolve(__dirname, './protos/helloworld.proto')
 const client = caller('localhost:50051', PROTO_PATH, 'Greeter')
+
+const root = path.join(__dirname, 'protos');
+const file = 'helloworld.proto'
+const client = caller('localhost:50051', { root, file }, 'Greeter')
 ```
 
 **Example** *(Create a static client)*  

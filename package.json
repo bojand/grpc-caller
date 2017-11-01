@@ -31,12 +31,11 @@
     "lodash": "^4.17.2",
     "promisify-call": "^2.0.0",
     "grpc-create-metadata": "^1.0.0",
-    "grpc-inspect": "^0.3.2"
+    "grpc-inspect": "^0.3.3"
   },
   "devDependencies": {
     "async": "^2.1.4",
-    "ava": "^0.22.0",
-    "babel-eslint": "^7.1.1",
+    "ava": "^0.23.0",
     "google-protobuf": "^3.0.0",
     "jsdoc-to-markdown": "^3.0.0",
     "md-wrap-code": "^0.1.1",
@@ -44,9 +43,6 @@
   },
   "directories": {
     "test": "test"
-  },
-  "standard": {
-    "parser": "babel-eslint"
   },
   "ava": {
     "files": [
