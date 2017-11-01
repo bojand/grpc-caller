@@ -10,6 +10,7 @@ module.exports = caller
  * Create client isntance.
  * @param {String} host - The host to connect to
  * @param {String|Object} proto Path to the protocol buffer definition file or
+ *                              Object specifying <code>root</code> directory and <code>file</code> to load or
  *                              the static client constructor object itself
  * @param {String} name - In case of proto path the name of the service as defined in the proto definition.
  * @param {Object} options - Options to be passed to the gRPC client constructor
@@ -18,6 +19,10 @@ module.exports = caller
  * @example <caption>Create client dynamically</caption>
  * const PROTO_PATH = path.resolve(__dirname, './protos/helloworld.proto')
  * const client = caller('localhost:50051', PROTO_PATH, 'Greeter')
+ * 
+ * const root = path.join(__dirname, 'protos');
+ * const file = 'helloworld.proto'
+ * const client = caller('localhost:50051', { root, file }, 'Greeter')
  *
  * @example <caption>Create a static client</caption>
  * const services = require('./static/helloworld_grpc_pb')
@@ -25,7 +30,7 @@ module.exports = caller
  */
 function caller (host, proto, name, options) {
   let Ctor
-  if (_.isString(proto)) {
+  if (_.isString(proto)  || (_.isObject(proto) && proto.root && proto.file)) {
     const loaded = grpc.load(proto)
     const descriptor = gi(loaded)
     if (!descriptor) {
