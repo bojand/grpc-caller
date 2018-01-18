@@ -15,18 +15,15 @@ An improved [gRPC](http://www.grpc.io) client.
 
 ## Installation
 
-
 ```
 $ npm install grpc-caller
 ```
-
 
 ## Overview
 
 #### Improved request / response calls
 
 Works as standard gRPC client:
-
 
 ```js
 const caller = require('grpc-caller')
@@ -37,24 +34,19 @@ client.sayHello({ name: 'Bob' }, (err, res) => {
 })
 ```
 
-
 For request / response calls, also promisified if callback is not provided:
-
 
 ```js
 client.sayHello({ name: 'Bob' })
   .then(res => console.log(res))
 ```
 
-
 Which means means you can use is with `async / await`
-
 
 ```js
 const res = await client.sayHello({ name: 'Bob' })
 console.log(res)
 ```
-
 
 #### Improved request stream / response calls
 
@@ -62,7 +54,6 @@ Lets say we have a remote call `writeStuff` that accepts a stream of messages
 and returns some result based on processing of the stream input.
 
 Works as standard gRPC client:
-
 
 ```js
 const call = client.writeStuff((err, res) => {
@@ -73,7 +64,6 @@ const call = client.writeStuff((err, res) => {
 // ... write stuff to call
 ```
 
-
 If no callback is provided we promisify the call such that it returns an **object
 with two properties** `call` and `res` such that:
 
@@ -81,7 +71,6 @@ with two properties** `call` and `res` such that:
 * `res` - a promise that's resolved / rejected when the call is finished, in place of the callback.
 
 Using destructuring we can do something like:
-
 
 ```js
 const { call, res } = client.writeStuff()
@@ -92,10 +81,8 @@ res
 // ... write stuff to call
 ```
 
-
 This means we can abstract the whole operation into a nicer promise returning
 async function to use with `async / await`
-
 
 ```js
 async function writeStuff() {
@@ -108,7 +95,6 @@ const res = await writeStuff()
 console.log(res)
 ```
 
-
 #### Automatic `Metadata` creation
 
 All standard gRPC client calls accept [`Metadata`](http://www.grpc.io/grpc/node/module-src_metadata-Metadata.html)
@@ -117,7 +103,6 @@ manually create the Metadata object. This module uses
 [grpc-create-metadata](https://www.github.com/bojand/grpc-create-metadata)
 to automatically create Metadata if plain Javascript object is passed in.
 
-
 ```js
 // the 2nd parameter will automatically be converted to gRPC Metadata and
 // included in the request
@@ -125,9 +110,7 @@ const res = await client.sayHello({ name: 'Bob' }, { requestid: 'my-request-id-1
 console.log(res)
 ```
 
-
 We can still pass an actual `Metadata` object and it will be used as is:
-
 
 ```js
 const meta = new grpc.Metadata()
@@ -135,7 +118,6 @@ meta.add('requestid', 'my-request-id-123')
 const res = await client.sayHello({ name: 'Bob' }, meta)
 console.log(res)
 ```
-
 
 ## API Reference
 
@@ -154,7 +136,6 @@ Create client isntance.
 | options | <code>Object</code> | Options to be passed to the gRPC client constructor |
 
 **Example** *(Create client dynamically)*  
-
 ```js
 const PROTO_PATH = path.resolve(__dirname, './protos/helloworld.proto')
 const client = caller('localhost:50051', PROTO_PATH, 'Greeter')
@@ -163,14 +144,11 @@ const root = path.join(__dirname, 'protos');
 const file = 'helloworld.proto'
 const client = caller('localhost:50051', { root, file }, 'Greeter')
 ```
-
 **Example** *(Create a static client)*  
-
 ```js
 const services = require('./static/helloworld_grpc_pb')
 const client = caller('localhost:50051', services.GreeterClient)
 ```
-
 <a name="caller.metadata"></a>
 
 #### caller.metadata
