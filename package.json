@@ -35,7 +35,7 @@
   },
   "devDependencies": {
     "async": "^2.6.0",
-    "ava": "^0.24.0",
+    "ava": "^0.25.0",
     "google-protobuf": "^3.5.0",
     "jsdoc-to-markdown": "^4.0.0",
     "standard": "^10.0.0"
