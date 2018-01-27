@@ -1,13 +1,12 @@
 # grpc-caller
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/bojand/grpc-caller.svg)](https://greenkeeper.io/)
-
 An improved [gRPC](http://www.grpc.io) client.
 
 [![npm version](https://img.shields.io/npm/v/grpc-caller.svg?style=flat-square)](https://www.npmjs.com/package/grpc-caller)
 [![build status](https://img.shields.io/travis/bojand/grpc-caller/master.svg?style=flat-square)](https://travis-ci.org/bojand/grpc-caller)
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg?style=flat-square)](https://standardjs.com)
 [![License](https://img.shields.io/github/license/bojand/grpc-caller.svg?style=flat-square)](https://raw.githubusercontent.com/bojand/grpc-caller/master/LICENSE)
+[![Greenkeeper badge](https://badges.greenkeeper.io/bojand/grpc-caller.svg)](https://greenkeeper.io/)
 
 #### Features
 
