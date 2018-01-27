@@ -1,5 +1,7 @@
 # grpc-caller
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/bojand/grpc-caller.svg)](https://greenkeeper.io/)
+
 An improved [gRPC](http://www.grpc.io) client.
 
 [![npm version](https://img.shields.io/npm/v/grpc-caller.svg?style=flat-square)](https://www.npmjs.com/package/grpc-caller)
