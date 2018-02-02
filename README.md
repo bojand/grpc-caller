@@ -1,3 +1,7 @@
+---
+layout: home
+---
+
 # grpc-caller
 
 An improved [gRPC](http://www.grpc.io) client.
