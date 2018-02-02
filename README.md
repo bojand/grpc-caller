@@ -1,7 +1,3 @@
----
-layout: page
----
-
 # grpc-caller
 
 An improved [gRPC](http://www.grpc.io) client.
