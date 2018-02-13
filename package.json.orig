@@ -27,18 +27,31 @@
     "client"
   ],
   "dependencies": {
+<<<<<<< HEAD
+    "grpc": "^1.7.2",
+    "grpc-create-metadata": "^2.0.0",
+    "grpc-inspect": "^0.4.0",
+=======
     "grpc": "^1.8.4",
     "grpc-create-metadata": "^3.0.0",
     "grpc-inspect": "^0.5.0",
+>>>>>>> master
     "lodash": "^4.17.2",
     "promisify-call": "^2.0.0"
   },
   "devDependencies": {
     "async": "^2.6.0",
+<<<<<<< HEAD
+    "ava": "^0.23.0",
+    "google-protobuf": "^3.5.0",
+    "jsdoc-to-markdown": "^3.0.2",
+    "md-wrap-code": "^0.1.1",
+=======
     "ava": "^0.25.0",
     "google-protobuf": "^3.5.0",
     "greenkeeper-lockfile": "^1.13.2",
     "jsdoc-to-markdown": "^4.0.0",
+>>>>>>> master
     "standard": "^10.0.0"
   },
   "directories": {
