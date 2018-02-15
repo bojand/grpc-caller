@@ -193,6 +193,43 @@ test('call service using async with metadata as Metadata and options object', as
   t.deepEqual(metadata, expected)
 })
 
+test.cb('Request API: call service using callback and just an argument', t => {
+  t.plan(9)
+  const req = new client.Request('doSomething', { message: 'Hello' })
+  req.exec((err, res) => {
+    t.ifError(err)
+    const { response } = res
+    t.truthy(res.response)
+    t.truthy(res.call)
+    t.falsy(res.metadata)
+    t.falsy(res.status)
+    t.truthy(response)
+    t.truthy(response.message)
+    t.falsy(response.metadata)
+    t.is(response.message, 'Hello')
+    t.end()
+  })
+})
+
+test.only('Request API: call service using async with just an argument', async t => {
+  t.plan(8)
+  const req = new client.Request('doSomething', { message: 'Hi' })
+  let p = req.exec()
+  console.dir(p, {depth: 3, colors: true})
+  const res = await p
+  console.dir(res, {depth: 3, colors: true})
+  const { response } = res
+  t.truthy(res.response)
+  t.truthy(res.call)
+  t.falsy(res.metadata)
+  t.falsy(res.status)
+  t.truthy(response)
+  t.truthy(response.message)
+  t.falsy(response.metadata)
+  t.is(response.message, 'Hi')
+})
+
 test.after.always.cb('guaranteed cleanup', t => {
+  console.log('cleanup')
   async.each(apps, (app, ascb) => app.tryShutdown(ascb), t.end)
 })
