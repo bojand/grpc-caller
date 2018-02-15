@@ -373,6 +373,43 @@ test('Request API: with metadata and status option', async t => {
   t.deepEqual(metadata, expected)
 })
 
+test.cb('Request API: with metadata and status option with callback', t => {
+  t.plan(13)
+  const ts = new Date().getTime()
+
+  const req = client
+    .request('doSomething', { message: 'Hi' })
+    .setMetadata({ requestId: 'bar-123', timestamp: ts })
+    .withResponseMetadata(true)
+    .withResponseStatus(true)
+
+  req.exec((err, res) => {
+    t.ifError(err)
+    t.truthy(res.metadata)
+    const md1 = res.metadata.getMap()
+    const expectedMd = { headermd: 'headerValue' }
+    t.deepEqual(md1, expectedMd)
+
+    t.truthy(res.status)
+    t.is(res.status.code, 0)
+    t.is(res.status.details, 'OK')
+    t.truthy(res.status.metadata)
+    const md2 = res.status.metadata.getMap()
+    const expectedMd2 = { trailermd: 'trailerValue' }
+    t.deepEqual(md2, expectedMd2)
+
+    const { response } = res
+    t.truthy(response)
+    t.truthy(response.message)
+    t.is(response.message, 'Hi')
+    t.truthy(response.metadata)
+    const metadata = JSON.parse(response.metadata)
+    const expected = { requestid: 'bar-123', timestamp: ts.toString() }
+    t.deepEqual(metadata, expected)
+    t.end()
+  })
+})
+
 test.after.always.cb('guaranteed cleanup', t => {
   async.each(apps, (app, ascb) => app.tryShutdown(ascb), t.end)
 })
