@@ -47,7 +47,7 @@
   },
   "ava": {
     "files": [
-      "test/reqres.test.js"
+      "test/*.test.js"
     ]
   },
   "engines": {
