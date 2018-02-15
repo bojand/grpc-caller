@@ -211,13 +211,10 @@ test.cb('Request API: call service using callback and just an argument', t => {
   })
 })
 
-test.only('Request API: call service using async with just an argument', async t => {
+test('Request API: call service using async with just an argument', async t => {
   t.plan(8)
   const req = new client.Request('doSomething', { message: 'Hi' })
-  let p = req.exec()
-  console.dir(p, {depth: 3, colors: true})
-  const res = await p
-  console.dir(res, {depth: 3, colors: true})
+  const res = await req.exec()
   const { response } = res
   t.truthy(res.response)
   t.truthy(res.call)
@@ -230,6 +227,5 @@ test.only('Request API: call service using async with just an argument', async t
 })
 
 test.after.always.cb('guaranteed cleanup', t => {
-  console.log('cleanup')
   async.each(apps, (app, ascb) => app.tryShutdown(ascb), t.end)
 })
