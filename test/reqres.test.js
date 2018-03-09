@@ -410,6 +410,19 @@ test.cb('Request API: with metadata and status option with callback', t => {
   })
 })
 
+test('Request API: expect to throw on unknown client method', t => {
+  const error = t.throws(() => {
+    client
+      .request('asdf', { message: 'Hi' })
+      .setMetadata({ requestId: 'bar-123' })
+      .withResponseMetadata(true)
+      .withResponseStatus(true)
+  })
+
+  t.truthy(error)
+  t.is(error.message, 'Invalid method: asdf')
+})
+
 test.after.always.cb('guaranteed cleanup', t => {
   async.each(apps, (app, ascb) => app.tryShutdown(ascb), t.end)
 })
