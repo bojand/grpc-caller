@@ -239,7 +239,7 @@ test.cb('Request API: call service using callback with metadata as plain object'
   t.plan(9)
   const ts = new Date().getTime()
   const req = new client.Request('doSomething', { message: 'Hello' })
-    .setMetadata({ requestId: 'bar-123', timestamp: ts })
+    .withMetadata({ requestId: 'bar-123', timestamp: ts })
 
   req.exec((err, res) => {
     t.ifError(err)
@@ -263,7 +263,7 @@ test('Request API: call service using async with metadata as plain object', asyn
   const ts = new Date().getTime()
 
   const req = new client.Request('doSomething', { message: 'Hi' })
-    .setMetadata({ requestId: 'bar-123', timestamp: ts })
+    .withMetadata({ requestId: 'bar-123', timestamp: ts })
 
   const res = await req.exec()
   t.truthy(res.call)
@@ -284,7 +284,7 @@ test('Request API: with metadata option', async t => {
   const ts = new Date().getTime()
 
   const req = new client.Request('doSomething', { message: 'Hi' })
-    .setMetadata({ requestId: 'bar-123', timestamp: ts })
+    .withMetadata({ requestId: 'bar-123', timestamp: ts })
     .withResponseMetadata(true)
 
   const res = await req.exec()
@@ -310,7 +310,7 @@ test('Request API: with status option', async t => {
   const ts = new Date().getTime()
 
   const req = new client.Request('doSomething', { message: 'Hi' })
-    .setMetadata({ requestId: 'bar-123', timestamp: ts })
+    .withMetadata({ requestId: 'bar-123', timestamp: ts })
     .withResponseStatus(true)
 
   const res = await req.exec()
@@ -339,7 +339,7 @@ test('Request API: with metadata and status option', async t => {
   const ts = new Date().getTime()
 
   const req = new client.Request('doSomething', { message: 'Hi' })
-    .setMetadata({ requestId: 'bar-123', timestamp: ts })
+    .withMetadata({ requestId: 'bar-123', timestamp: ts })
     .withResponseMetadata(true)
     .withResponseStatus(true)
 
@@ -373,7 +373,7 @@ test.cb('Request API: with metadata and status option with callback', t => {
   const ts = new Date().getTime()
 
   const req = new client.Request('doSomething', { message: 'Hi' })
-    .setMetadata({ requestId: 'bar-123', timestamp: ts })
+    .withMetadata({ requestId: 'bar-123', timestamp: ts })
     .withResponseMetadata(true)
     .withResponseStatus(true)
 
@@ -406,10 +406,12 @@ test.cb('Request API: with metadata and status option with callback', t => {
 
 test('Request API: expect to throw on unknown client method', t => {
   const error = t.throws(() => {
-    new client.Request('asdf', { message: 'Hi' })
-      .setMetadata({ requestId: 'bar-123' })
+    const req = new client.Request('asdf', { message: 'Hi' })
+      .withMetadata({ requestId: 'bar-123' })
       .withResponseMetadata(true)
       .withResponseStatus(true)
+
+    req.exec()
   })
 
   t.truthy(error)

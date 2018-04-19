@@ -192,6 +192,17 @@ test.cb('call service with metadata as Metadata and options object', t => {
   })
 })
 
+test('Request API: should fail due to unsupported call type', t => {
+  const error = t.throws(() => {
+    const req = new client.Request('listStuff', { message: 'Hello' })
+
+    req.exec()
+  })
+
+  t.truthy(error)
+  t.is(error.message, 'Invalid call: listStuff cannot be called using Request API')
+})
+
 test.after.always.cb('guaranteed cleanup', t => {
   async.each(apps, (app, ascb) => app.tryShutdown(ascb), t.end)
 })
