@@ -5,7 +5,7 @@
   "main": "lib/index.js",
   "scripts": {
     "test": "ava -v",
-    "docs": "jsdoc2md index.js --heading-depth 3 --template readme.hbs > README.md"
+    "docs": "jsdoc2md lib/*.js --heading-depth 3 --template readme.hbs > README.md"
   },
   "repository": {
     "type": "git",
