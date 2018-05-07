@@ -2,10 +2,10 @@
   "name": "grpc-caller",
   "version": "0.4.0",
   "description": "An improved Node.js gRPC client",
-  "main": "index.js",
+  "main": "lib/index.js",
   "scripts": {
     "test": "ava -v",
-    "docs": "jsdoc2md index.js --heading-depth 3 --template readme.hbs > README.md"
+    "docs": "jsdoc2md lib/*.js --heading-depth 3 --template readme.hbs > README.md"
   },
   "repository": {
     "type": "git",
@@ -27,17 +27,21 @@
     "client"
   ],
   "dependencies": {
-    "grpc": "^1.8.4",
+    "async": "^2.6.0",
+    "call-me-maybe": "^1.0.1",
     "grpc-create-metadata": "^3.0.0",
     "grpc-inspect": "^0.5.0",
     "lodash": "^4.17.2",
     "promisify-call": "^2.0.0"
   },
+  "peerDependencies": {
+    "grpc": "^1.0.0"
+  },
   "devDependencies": {
-    "async": "^2.6.0",
     "ava": "^0.25.0",
     "google-protobuf": "^3.5.0",
-    "greenkeeper-lockfile": "^1.13.2",
+    "greenkeeper-lockfile": "^1.14.0",
+    "grpc": "^1.10.1",
     "jsdoc-to-markdown": "^4.0.0",
     "standard": "^11.0.0"
   },
