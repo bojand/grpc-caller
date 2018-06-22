@@ -1,5 +1,5 @@
 {
-  "name": "@olono/grpc-caller",
+  "name": "grpc-caller",
   "version": "0.6.0",
   "description": "An improved Node.js gRPC client",
   "main": "lib/index.js",
