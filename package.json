@@ -42,6 +42,7 @@
     "google-protobuf": "^3.6.0",
     "greenkeeper-lockfile": "^1.15.0",
     "grpc": "^1.13.0",
+    "@grpc/proto-loader": "^0.3.0",
     "jsdoc-to-markdown": "^4.0.0",
     "standard": "^11.0.0"
   },
