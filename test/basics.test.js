@@ -2,6 +2,7 @@ import test from 'ava'
 import path from 'path'
 import async from 'async'
 const grpc = require('grpc')
+const protoLoader = require('@grpc/proto-loader')
 
 const caller = require('../')
 
@@ -9,7 +10,8 @@ const PROTO_PATH = path.resolve(__dirname, './protos/helloworld.proto')
 const PROTO_ROOT = path.join(__dirname, 'protos')
 const PROTO_FILE = 'helloworld.proto'
 
-const helloproto = grpc.load(PROTO_PATH).helloworld
+const packageDefinition = protoLoader.loadSync(PROTO_PATH)
+const helloproto = grpc.loadPackageDefinition(packageDefinition).helloworld
 
 const apps = []
 

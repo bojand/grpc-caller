@@ -4,10 +4,13 @@ import path from 'path'
 import async from 'async'
 import grpc from 'grpc'
 
+const protoLoader = require('@grpc/proto-loader')
+
 const caller = require('../')
 
 const PROTO_PATH = path.resolve(__dirname, './protos/duplex.proto')
-const argProto = grpc.load(PROTO_PATH).argservice
+const packageDefinition = protoLoader.loadSync(PROTO_PATH)
+const argProto = grpc.loadPackageDefinition(packageDefinition).argservice
 
 const apps = []
 

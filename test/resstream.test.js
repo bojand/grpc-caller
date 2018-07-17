@@ -4,10 +4,13 @@ import path from 'path'
 import async from 'async'
 import grpc from 'grpc'
 
+const protoLoader = require('@grpc/proto-loader')
+
 const caller = require('../')
 
 const PROTO_PATH = path.resolve(__dirname, './protos/resstream.proto')
-const argProto = grpc.load(PROTO_PATH).argservice
+const packageDefinition = protoLoader.loadSync(PROTO_PATH)
+const argProto = grpc.loadPackageDefinition(packageDefinition).argservice
 
 const apps = []
 
@@ -45,16 +48,20 @@ test.before('should dynamically create service', t => {
       }
     }
 
-    async.eachSeries(data, (d, asfn) => {
-      const ret = { message: d.message + ':' + reqMsg }
-      if (meta) {
-        ret.metadata = meta
+    async.eachSeries(
+      data,
+      (d, asfn) => {
+        const ret = { message: d.message + ':' + reqMsg }
+        if (meta) {
+          ret.metadata = meta
+        }
+        call.write(ret)
+        _.delay(asfn, _.random(50, 150))
+      },
+      () => {
+        call.end()
       }
-      call.write(ret)
-      _.delay(asfn, _.random(50, 150))
-    }, () => {
-      call.end()
-    })
+    )
   }
 
   const server = new grpc.Server()
@@ -74,9 +81,7 @@ test.cb('call service using just an argument', t => {
 
     let expected = _.cloneDeep(data)
     expected = _.map(expected, d => {
-      d.message = d.message + ':Hello'
-      d.metadata = ''
-      return d
+      return { message: d.message + ':Hello' }
     })
 
     t.deepEqual(resData, expected)
@@ -143,7 +148,11 @@ test.cb('call service with metadata as plain object and options object', t => {
   t.plan(1)
   let resData = []
   const ts = new Date().getTime()
-  const call = client.listStuff({ message: 'Hello' }, { requestId: 'bar-123', timestamp: ts }, { some: 'blah' })
+  const call = client.listStuff(
+    { message: 'Hello' },
+    { requestId: 'bar-123', timestamp: ts },
+    { some: 'blah' }
+  )
   call.on('data', d => {
     const metadata = d.metadata ? JSON.parse(d.metadata) : ''
     resData.push({ message: d.message, metadata })
