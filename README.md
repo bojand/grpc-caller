@@ -332,7 +332,7 @@ Create client isntance.
 | Param | Type | Description |
 | --- | --- | --- |
 | host | <code>String</code> | The host to connect to |
-| proto | <code>String</code> \| <code>Object</code> | Path to the protocol buffer definition file or                              Object specifying <code>file</code> to load <code>load</code> options for proto loader |
+| proto | <code>String</code> \| <code>Object</code> | Path to the protocol buffer definition file or                              Object specifying <code>file</code> to load and <code>load</code> options for proto loader. |
 | name | <code>String</code> | In case of proto path the name of the service as defined in the proto definition. |
 | credentials | <code>Object</code> | The credentials to use to connect. Defaults to `grpc.credentials.createInsecure()` |
 | options | <code>Object</code> | Options to be passed to the gRPC client constructor |
@@ -342,10 +342,13 @@ Create client isntance.
 ```js
 const PROTO_PATH = path.resolve(__dirname, './protos/helloworld.proto')
 const client = caller('localhost:50051', PROTO_PATH, 'Greeter')
-
-const root = path.join(__dirname, 'protos')
+```
+**Example** *(With options)*  
+```js
 const file = path.join(__dirname, 'helloworld.proto')
-const load = { includeDirs: [ root ] }
+const load = {
+  // ... proto-loader load options
+}
 const client = caller('localhost:50051', { file, load }, 'Greeter')
 ```
 **Example** *(Create a static client)*  
