@@ -324,7 +324,7 @@ The response status metadata.
 **Kind**: instance property of [<code>Response</code>](#Response)  
 <a name="caller"></a>
 
-### caller(host, proto, name, options) ⇒ <code>Object</code>
+### caller(host, proto, name, credentials, options) ⇒ <code>Object</code>
 Create client isntance.
 
 **Kind**: global function  
@@ -332,8 +332,9 @@ Create client isntance.
 | Param | Type | Description |
 | --- | --- | --- |
 | host | <code>String</code> | The host to connect to |
-| proto | <code>String</code> \| <code>Object</code> | Path to the protocol buffer definition file or                              Object specifying <code>root</code> directory and <code>file</code> to load or                              the static client constructor object itself |
+| proto | <code>String</code> \| <code>Object</code> | Path to the protocol buffer definition file or                              Object specifying <code>file</code> to load <code>load</code> options for proto loader |
 | name | <code>String</code> | In case of proto path the name of the service as defined in the proto definition. |
+| credentials | <code>Object</code> | The credentials to use to connect. Defaults to `grpc.credentials.createInsecure()` |
 | options | <code>Object</code> | Options to be passed to the gRPC client constructor |
 | options.retry | <code>Object</code> | In addition to gRPC client constructor options, we accept a `retry` option.                                 The retry option is identical to `async.retry` and is passed as is to it.                                 This is used only for `UNARY` calls to add automatic retry capability. |
 
@@ -342,9 +343,10 @@ Create client isntance.
 const PROTO_PATH = path.resolve(__dirname, './protos/helloworld.proto')
 const client = caller('localhost:50051', PROTO_PATH, 'Greeter')
 
-const root = path.join(__dirname, 'protos');
-const file = 'helloworld.proto'
-const client = caller('localhost:50051', { root, file }, 'Greeter')
+const root = path.join(__dirname, 'protos')
+const file = path.join(__dirname, 'helloworld.proto')
+const load = { includeDirs: [ root ] }
+const client = caller('localhost:50051', { file, load }, 'Greeter')
 ```
 **Example** *(Create a static client)*  
 ```js
@@ -352,7 +354,7 @@ const services = require('./static/helloworld_grpc_pb')
 const client = caller('localhost:50051', services.GreeterClient)
 ```
 
-* [caller(host, proto, name, options)](#caller) ⇒ <code>Object</code>
+* [caller(host, proto, name, credentials, options)](#caller) ⇒ <code>Object</code>
     * [.metadata](#caller.metadata)
     * [.wrap](#caller.wrap)
 
