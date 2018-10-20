@@ -127,7 +127,6 @@ call.write(message)
 call.write(message2)
 ```
 
-
 #### Automatic `Metadata` creation
 
 All standard gRPC client calls accept [`Metadata`](http://www.grpc.io/grpc/node/module-src_metadata-Metadata.html)

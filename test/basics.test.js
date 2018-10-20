@@ -65,6 +65,18 @@ test.cb('call dynamic service using callback', t => {
   })
 })
 
+test.cb('call dynamic service using callback created using package', t => {
+  t.plan(4)
+  const client = caller(DYNAMIC_HOST, PROTO_PATH, 'helloworld.Greeter')
+  client.sayHello({ name: 'Bob' }, (err, response) => {
+    t.ifError(err)
+    t.truthy(response)
+    t.truthy(response.message)
+    t.is(response.message, 'Hello Bob')
+    t.end()
+  })
+})
+
 test.cb('call dynamic service using callback and load options', t => {
   t.plan(4)
   const client = caller(DYNAMIC_HOST, { load: {}, file: PROTO_PATH }, 'Greeter')
