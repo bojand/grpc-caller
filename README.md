@@ -13,8 +13,8 @@ An improved [gRPC](http://www.grpc.io) client.
 #### Features
 
 * Promisifies request / response (Unary) calls if no callback is supplied
-* Promisifies request stream / response calls if no callback is supplied
-* Automatically converts plain javascript object to metadata in calls.
+* Promisifies request stream / response (Client sreaming) calls if no callback is supplied
+* Automatically converts plain javascript object to metadata in all calls.
 * Adds optional retry functionality to request / response (Unary) calls.
 * Exposes expanded `Request` API for collecting metadata and status.
 
@@ -60,7 +60,7 @@ const res = await client.sayHello({ name: 'Bob' }, {}, { retry: 3 })
 console.log(res)
 ```
 
-#### Improved request stream / response calls
+#### Improved request stream / response (Client streaming) calls
 
 Lets say we have a remote call `writeStuff` that accepts a stream of messages
 and returns some result based on processing of the stream input.
@@ -106,6 +106,27 @@ async function writeStuff() {
 const res = await writeStuff()
 console.log(res)
 ```
+
+#### Server streaming and Duplex calls
+
+Server streaming and Duplex calls remain the same. Fictional server streaming example:
+
+```js
+const call = client.listStuff({ message: 'Hello' })
+call.on('data', message => console.log(message))
+call.on('end', () => console.log('all data recieved'))
+```
+
+Or duplex:
+
+```js
+const call = client.chat()
+call.on('data', message => console.log(message))
+call.on('end', () => console.log('all data recieved'))
+call.write(message)
+call.write(message2)
+```
+
 
 #### Automatic `Metadata` creation
 
