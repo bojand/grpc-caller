@@ -6,15 +6,13 @@ An improved [gRPC](http://www.grpc.io) client.
 [![build status](https://img.shields.io/travis/bojand/grpc-caller/master.svg?style=flat-square)](https://travis-ci.org/bojand/grpc-caller)
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg?style=flat-square)](https://standardjs.com)
 [![License](https://img.shields.io/github/license/bojand/grpc-caller.svg?style=flat-square)](https://raw.githubusercontent.com/bojand/grpc-caller/master/LICENSE)
-[![Greenkeeper badge](https://badges.greenkeeper.io/bojand/grpc-caller.svg?style=flat-square)](https://greenkeeper.io/)
-[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg?style=flat-square)](https://www.paypal.me/bojandj)
-[![Buy me a coffee](https://img.shields.io/badge/buy%20me-a%20coffee-orange.svg?style=flat-square)](https://www.buymeacoffee.com/bojand)
+[![Greenkeeper badge](https://badges.greenkeeper.io/bojand/grpc-caller.svg)](https://greenkeeper.io/)
 
 #### Features
 
 * Promisifies request / response (Unary) calls if no callback is supplied
-* Promisifies request stream / response (Client sreaming) calls if no callback is supplied
-* Automatically converts plain javascript object to metadata in all calls.
+* Promisifies request stream / response calls if no callback is supplied
+* Automatically converts plain javascript object to metadata in calls.
 * Adds optional retry functionality to request / response (Unary) calls.
 * Exposes expanded `Request` API for collecting metadata and status.
 
@@ -60,7 +58,7 @@ const res = await client.sayHello({ name: 'Bob' }, {}, { retry: 3 })
 console.log(res)
 ```
 
-#### Improved request stream / response (Client streaming) calls
+#### Improved request stream / response calls
 
 Lets say we have a remote call `writeStuff` that accepts a stream of messages
 and returns some result based on processing of the stream input.
@@ -105,26 +103,6 @@ async function writeStuff() {
 
 const res = await writeStuff()
 console.log(res)
-```
-
-#### Server streaming and Duplex calls
-
-Server streaming and Duplex calls remain the same. Fictional server streaming example:
-
-```js
-const call = client.listStuff({ message: 'Hello' })
-call.on('data', message => console.log(message))
-call.on('end', () => console.log('all data recieved'))
-```
-
-Or duplex:
-
-```js
-const call = client.chat()
-call.on('data', message => console.log(message))
-call.on('end', () => console.log('all data recieved'))
-call.write(message)
-call.write(message2)
 ```
 
 #### Automatic `Metadata` creation
@@ -346,7 +324,7 @@ The response status metadata.
 **Kind**: instance property of [<code>Response</code>](#Response)  
 <a name="caller"></a>
 
-### caller(host, proto, name, credentials, options) ⇒ <code>Object</code>
+### caller(host, proto, name, credentials, options, defaults) ⇒ <code>Object</code>
 Create client isntance.
 
 **Kind**: global function  
@@ -359,6 +337,7 @@ Create client isntance.
 | credentials | <code>Object</code> | The credentials to use to connect. Defaults to `grpc.credentials.createInsecure()` |
 | options | <code>Object</code> | Options to be passed to the gRPC client constructor |
 | options.retry | <code>Object</code> | In addition to gRPC client constructor options, we accept a `retry` option.                                 The retry option is identical to `async.retry` and is passed as is to it.                                 This is used only for `UNARY` calls to add automatic retry capability. |
+| defaults | <code>Object</code> | Metadata and Options that will be passed to every Request |
 
 **Example** *(Create client dynamically)*  
 ```js
@@ -378,8 +357,17 @@ const client = caller('localhost:50051', { file, load }, 'Greeter')
 const services = require('./static/helloworld_grpc_pb')
 const client = caller('localhost:50051', services.GreeterClient)
 ```
+**Example** *(Pass Default Metadata or Options)*  
+```js
+const metadata = { node_id: process.env.CLUSTER_NODE_ID };
+const options = { interceptors: [ bestInterceptorEver ] };
+client = caller.wrap(serviceWrapper, metadata, options);
 
-* [caller(host, proto, name, credentials, options)](#caller) ⇒ <code>Object</code>
+// Now every call with that client will result 
+// in invoking the interceptor and sending the default metadata
+```
+
+* [caller(host, proto, name, credentials, options, defaults)](#caller) ⇒ <code>Object</code>
     * [.metadata](#caller.metadata)
     * [.wrap](#caller.wrap)
 
