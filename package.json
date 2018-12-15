@@ -39,7 +39,7 @@
     "grpc": "^1.13.0"
   },
   "devDependencies": {
-    "ava": "^0.25.0",
+    "ava": "^1.0.1",
     "google-protobuf": "^3.6.1",
     "greenkeeper-lockfile": "^1.15.0",
     "grpc": "^1.15.1",
