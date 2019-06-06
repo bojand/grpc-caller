@@ -1,6 +1,6 @@
 {
   "name": "grpc-caller",
-  "version": "0.11.0",
+  "version": "0.12.0",
   "description": "An improved Node.js gRPC client",
   "main": "lib/index.js",
   "scripts": {
