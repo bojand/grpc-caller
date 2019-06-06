@@ -157,6 +157,40 @@ test('async options interceptors, default metadata and call metadata', async t =
   t.is(response.message, 'bar -> Hello Bob2 -> meta')
 })
 
+test('static async options interceptors, default metadata and call metadata', async t => {
+  t.plan(4)
+
+  const messages = require('./static/helloworld_pb')
+  const services = require('./static/helloworld_grpc_pb')
+
+  const interceptor = (options, nextCall) =>
+    new grpc.InterceptingCall(nextCall(options), {
+      sendMessage: (message, next) => {
+        const name = message.getName()
+        t.is(name, 'Bob')
+        message.setName(name + 2)
+        next(message)
+      }
+    })
+
+  const options = grpc.credentials.createInsecure()
+  options.interceptors = [interceptor]
+
+  const serviceClient = new services.GreeterClient(TEST_HOST, options)
+
+  const client = caller.wrap(serviceClient, { foo: 'bar' }, options)
+
+  const request = new messages.HelloRequest()
+  request.setName('Bob')
+
+  const response = await client.sayHello(request, { ping: 'meta' })
+  t.truthy(response)
+  t.truthy(response.getMessage())
+
+  const msg = response.getMessage()
+  t.is(msg, 'bar -> Hello Bob2 -> meta')
+})
+
 test.after.always.cb('guaranteed cleanup', t => {
   async.each(apps, (app, ascb) => app.tryShutdown(ascb), t.end)
 })
