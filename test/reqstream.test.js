@@ -81,10 +81,10 @@ test.before('should dynamically create service', t => {
   apps.push(server)
 })
 
-test.cb('call service using just an argument', t => {
+test.cb('Reqres: call service using just an argument', t => {
   t.plan(5)
   const call = client.writeStuff((err, res) => {
-    t.ifError(err)
+    t.falsy(err)
     t.truthy(res)
     t.truthy(res.message)
     t.falsy(res.metadata)
@@ -119,7 +119,7 @@ test.cb('promised call service using just an argument', t => {
   })
 })
 
-test('call service using just an argument', async t => {
+test('async call service using just an argument', async t => {
   t.plan(4)
 
   async function writeStuff () {
@@ -146,7 +146,7 @@ test.cb('call service with metadata as plain object', t => {
   t.plan(6)
   const ts = new Date().getTime()
   const call = client.writeStuff({ requestId: 'bar-123', timestamp: ts }, (err, res) => {
-    t.ifError(err)
+    t.falsy(err)
     t.truthy(res)
     t.truthy(res.message)
     t.is(res.message, '1 foo:2 bar:3 asd:4 qwe:5 rty:6 zxc:6')
@@ -195,7 +195,7 @@ test.cb('call service with metadata as Metadata', t => {
   reqMeta.add('requestId', 'bar-123')
   reqMeta.add('timestamp', ts)
   const call = client.writeStuff(reqMeta, (err, res) => {
-    t.ifError(err)
+    t.falsy(err)
     t.truthy(res)
     t.truthy(res.message)
     t.is(res.message, '1 foo:2 bar:3 asd:4 qwe:5 rty:6 zxc:6')
@@ -218,7 +218,7 @@ test.cb('call service with metadata as plain object and options object', t => {
   t.plan(6)
   const ts = new Date().getTime()
   const call = client.writeStuff({ requestId: 'bar-123', timestamp: ts }, { some: 'blah' }, (err, res) => {
-    t.ifError(err)
+    t.falsy(err)
     t.truthy(res)
     t.truthy(res.message)
     t.is(res.message, '1 foo:2 bar:3 asd:4 qwe:5 rty:6 zxc:6')
@@ -267,7 +267,7 @@ test.cb('call service with metadata as Metadata and options object', t => {
   reqMeta.add('requestId', 'bar-123')
   reqMeta.add('timestamp', ts)
   const call = client.writeStuff(reqMeta, { some: 'blah' }, (err, res) => {
-    t.ifError(err)
+    t.falsy(err)
     t.truthy(res)
     t.truthy(res.message)
     t.is(res.message, '1 foo:2 bar:3 asd:4 qwe:5 rty:6 zxc:6')
@@ -290,7 +290,7 @@ test.cb('Request API: call service using callback and just an argument', t => {
   t.plan(9)
   const req = new client.Request('writeStuff')
   const call = req.exec((err, res) => {
-    t.ifError(err)
+    t.falsy(err)
     const { response } = res
     t.truthy(res.response)
     t.truthy(res.call)
@@ -343,7 +343,7 @@ test.cb('Request API: call service using callback with metadata as plain object'
     .withMetadata({ requestId: 'bar-123', timestamp: ts })
 
   const call = req.exec((err, res) => {
-    t.ifError(err)
+    t.falsy(err)
     const { response } = res
     t.truthy(res.response)
     t.truthy(res.call)
@@ -448,7 +448,7 @@ test.cb('Request API: callback call with metadata options', t => {
     .withResponseMetadata(true)
 
   const call = req.exec((err, res) => {
-    t.ifError(err)
+    t.falsy(err)
     t.truthy(res.call)
     t.truthy(res.metadata)
     const md1 = res.metadata.getMap()
@@ -537,7 +537,7 @@ test.cb('Request API: callback call with status options', t => {
     .withResponseStatus(true)
 
   const call = req.exec((err, res) => {
-    t.ifError(err)
+    t.falsy(err)
 
     t.truthy(res.call)
     t.truthy(res.metadata)

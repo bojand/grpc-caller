@@ -57,7 +57,7 @@ test.cb('call dynamic service using callback', t => {
   t.plan(4)
   const client = caller(DYNAMIC_HOST, PROTO_PATH, 'Greeter')
   client.sayHello({ name: 'Bob' }, (err, response) => {
-    t.ifError(err)
+    t.falsy(err)
     t.truthy(response)
     t.truthy(response.message)
     t.is(response.message, 'Hello Bob')
@@ -69,7 +69,7 @@ test.cb('call dynamic service using callback created using package', t => {
   t.plan(4)
   const client = caller(DYNAMIC_HOST, PROTO_PATH, 'helloworld.Greeter')
   client.sayHello({ name: 'Bob' }, (err, response) => {
-    t.ifError(err)
+    t.falsy(err)
     t.truthy(response)
     t.truthy(response.message)
     t.is(response.message, 'Hello Bob')
@@ -81,7 +81,7 @@ test.cb('call dynamic service using callback and load options', t => {
   t.plan(4)
   const client = caller(DYNAMIC_HOST, { load: {}, file: PROTO_PATH }, 'Greeter')
   client.sayHello({ name: 'Root' }, (err, response) => {
-    t.ifError(err)
+    t.falsy(err)
     t.truthy(response)
     t.truthy(response.message)
     t.is(response.message, 'Hello Root')
@@ -100,7 +100,7 @@ test.cb('call static service using callback', t => {
   const request = new messages.HelloRequest()
   request.setName('Jane')
   client.sayHello(request, (err, response) => {
-    t.ifError(err)
+    t.falsy(err)
     t.truthy(response)
     t.truthy(response.getMessage)
     const msg = response.getMessage()

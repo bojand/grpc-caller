@@ -357,13 +357,16 @@ const client = caller('localhost:50051', { file, load }, 'Greeter')
 const services = require('./static/helloworld_grpc_pb')
 const client = caller('localhost:50051', services.GreeterClient)
 ```
-**Example** *(Pass Default Metadata or Options)*  
+**Example** *(Pass Options, Default Metadata and Interceptor options)*  
 ```js
 const metadata = { node_id: process.env.CLUSTER_NODE_ID };
-const options = { interceptors: [ bestInterceptorEver ] };
-client = caller.wrap(serviceWrapper, metadata, options);
+const options = grpc.credentials.createInsecure()
+options.interceptors = [ bestInterceptorEver ] }
+const client = caller('localhost:50051', PROTO_PATH, 'Greeter', options, {
+  metadata: { foo: 'bar' }
+})
 
-// Now every call with that client will result 
+// Now every call with that client will result
 // in invoking the interceptor and sending the default metadata
 ```
 

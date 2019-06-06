@@ -77,7 +77,7 @@ test.before('should dynamically create service', t => {
   apps.push(server)
 })
 
-test.cb('call service using just an argument', t => {
+test.cb('Duplex: call service using just an argument', t => {
   t.plan(1)
   let resData = []
 

@@ -69,7 +69,7 @@ test.serial.cb('Retry: call service using retry option and callback', t => {
   callCounter = 0
 
   client.doSomething({ message: 'Bad' }, {}, { retry: 5 }, (err, response) => {
-    t.ifError(err)
+    t.falsy(err)
     t.truthy(response)
     t.truthy(response.message)
     t.falsy(response.metadata)
@@ -77,19 +77,6 @@ test.serial.cb('Retry: call service using retry option and callback', t => {
     t.is(callCounter, 3)
     t.end()
   })
-})
-
-test.serial('Retry: async call service using retry option', async t => {
-  t.plan(5)
-
-  callCounter = 0
-
-  const response = await client.doSomething({ message: 'Bad' }, {}, { retry: 5 })
-  t.is(callCounter, 3)
-  t.truthy(response)
-  t.truthy(response.message)
-  t.falsy(response.metadata)
-  t.is(response.message, 'Bad')
 })
 
 test.serial('Retry: async call service using retry option', async t => {
@@ -115,7 +102,7 @@ test.serial.cb('Request API with retry: call service using callback and just an 
     .withRetry(5)
 
   req.exec((err, res) => {
-    t.ifError(err)
+    t.falsy(err)
     t.is(callCounter, 3)
     const { response } = res
     t.truthy(res.response)
