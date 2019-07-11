@@ -359,9 +359,11 @@ const client = caller('localhost:50051', services.GreeterClient)
 **Example** *(Pass Options, Default Metadata and Interceptor options)*  
 ```js
 const metadata = { node_id: process.env.CLUSTER_NODE_ID };
-const options = grpc.credentials.createInsecure()
-options.interceptors = [ bestInterceptorEver ] }
-const client = caller('localhost:50051', PROTO_PATH, 'Greeter', options, {
+const credentials = grpc.credentials.createInsecure()
+const options = {
+  interceptors = [ bestInterceptorEver ]
+}
+const client = caller('localhost:50051', PROTO_PATH, 'Greeter', credentials, options, {
   metadata: { foo: 'bar' }
 })
 

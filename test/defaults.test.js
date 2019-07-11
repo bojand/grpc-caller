@@ -144,10 +144,12 @@ test('async options interceptors, default metadata and call metadata', async t =
       }
     })
 
-  const options = grpc.credentials.createInsecure()
-  options.interceptors = [interceptor]
+  const credentials = grpc.credentials.createInsecure()
+  const options = {
+    interceptors: [interceptor]
+  }
 
-  const client = caller(TEST_HOST, PROTO_PATH, 'helloworld.Greeter', false, options, {
+  const client = caller(TEST_HOST, PROTO_PATH, 'helloworld.Greeter', credentials, options, {
     metadata: { foo: 'bar' }
   })
 
@@ -173,10 +175,12 @@ test('static async options interceptors, default metadata and call metadata', as
       }
     })
 
-  const options = grpc.credentials.createInsecure()
-  options.interceptors = [interceptor]
+  const credentials = grpc.credentials.createInsecure()
+  const options = {
+    interceptors: [interceptor]
+  }
 
-  const serviceClient = new services.GreeterClient(TEST_HOST, options)
+  const serviceClient = new services.GreeterClient(TEST_HOST, credentials, options)
 
   const client = caller.wrap(serviceClient, { foo: 'bar' }, options)
 
