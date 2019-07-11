@@ -145,12 +145,11 @@ test('async options interceptors, default metadata and call metadata', async t =
     })
 
   const credentials = grpc.credentials.createInsecure()
-  const options = {
-    interceptors: [interceptor]
-  }
-
-  const client = caller(TEST_HOST, PROTO_PATH, 'helloworld.Greeter', credentials, options, {
-    metadata: { foo: 'bar' }
+  const client = caller(TEST_HOST, PROTO_PATH, 'helloworld.Greeter', credentials, null, {
+    metadata: { foo: 'bar' },
+    options: {
+        interceptors: [interceptor]
+    }
   })
 
   const response = await client.sayHello({ name: 'Bob' }, { ping: 'meta' })
