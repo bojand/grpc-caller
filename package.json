@@ -1,5 +1,5 @@
 {
-  "name": "grpc-caller",
+  "name": "@guanghe/grpc-caller",
   "version": "0.13.0",
   "description": "An improved Node.js gRPC client",
   "main": "lib/index.js",
