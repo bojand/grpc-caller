@@ -1,10 +1,9 @@
-import _ from 'lodash'
-import test from 'ava'
-import path from 'path'
-import async from 'async'
-import grpc from 'grpc'
-
+const _ = require('lodash')
+const async = require('async')
+const grpc = require('@grpc/grpc-js')
+const path = require('path')
 const protoLoader = require('@grpc/proto-loader')
+const test = require('ava')
 
 const caller = require('../')
 
@@ -34,7 +33,7 @@ function getHost (port) {
 const DYNAMIC_HOST = getHost()
 const client = caller(DYNAMIC_HOST, PROTO_PATH, 'ArgService')
 
-test.before('should dynamically create service', t => {
+test.before('should dynamically create service', async (t) => {
   function listStuff (call) {
     const reqMsg = call.request.message
     let meta = null
@@ -66,7 +65,11 @@ test.before('should dynamically create service', t => {
 
   const server = new grpc.Server()
   server.addService(argProto.ArgService.service, { listStuff })
-  server.bind(DYNAMIC_HOST, grpc.ServerCredentials.createInsecure())
+  await new Promise((resolve, reject) => {
+    server.bindAsync(DYNAMIC_HOST, grpc.ServerCredentials.createInsecure(),
+      (err, result) => (err ? reject(err) : resolve(result))
+    )
+  })
   server.start()
   apps.push(server)
 })

@@ -5,7 +5,8 @@
   "main": "lib/index.js",
   "scripts": {
     "test": "ava -v",
-    "docs": "jsdoc2md lib/*.js --heading-depth 3 --template readme.hbs > README.md"
+    "docs": "jsdoc2md lib/*.js --heading-depth 3 --template readme.hbs > README.md",
+    "lint.fix": "standard --fix"
   },
   "repository": {
     "type": "git",
@@ -27,24 +28,24 @@
     "client"
   ],
   "dependencies": {
-    "@grpc/proto-loader": "^0.5.0",
-    "async": "^3.1.0",
+    "@grpc/proto-loader": "^0.5.6",
+    "async": "^3.2.0",
     "call-me-maybe": "^1.0.1",
-    "grpc-create-metadata": "^3.0.0",
+    "grpc-create-metadata": "^4.0.0",
     "grpc-inspect": "^0.6.0",
     "lodash": "^4.17.14",
     "promisify-call": "^2.0.0"
   },
   "peerDependencies": {
-    "grpc": "^1.13.0"
+    "@grpc/grpc-js": "^1.2.0"
   },
   "devDependencies": {
-    "ava": "^2.2.0",
+    "@grpc/grpc-js": "^1.2.10",
+    "ava": "^3.15.0",
     "google-protobuf": "^3.8.0",
     "greenkeeper-lockfile": "^1.15.0",
-    "grpc": "^1.22.2",
     "jsdoc-to-markdown": "^5.0.0",
-    "standard": "^13.0.0"
+    "standard": "^16.0.3"
   },
   "directories": {
     "test": "test"
@@ -55,6 +56,11 @@
     ]
   },
   "engines": {
-    "node": ">=6.9.0"
+    "node": ">=12.0.0"
+  },
+  "standard": {
+    "ignore": [
+      "**/*_pb.js"
+    ]
   }
 }
