@@ -1,7 +1,7 @@
-import test from 'ava'
-import path from 'path'
-import async from 'async'
-const grpc = require('grpc')
+const test = require('ava')
+const path = require('path')
+const async = require('async')
+const grpc = require('@grpc/grpc-js')
 const protoLoader = require('@grpc/proto-loader')
 
 const caller = require('../')
@@ -31,9 +31,11 @@ test.before('should dynamically create service', t => {
 
   const server = new grpc.Server()
   server.addService(helloproto.Greeter.service, { sayHello: sayHello })
-  server.bind(DYNAMIC_HOST, grpc.ServerCredentials.createInsecure())
-  server.start()
-  apps.push(server)
+  server.bindAsync(DYNAMIC_HOST, grpc.ServerCredentials.createInsecure(), err => {
+    t.falsy(err)
+    server.start()
+    apps.push(server)
+  })
 })
 
 test.before('should statically create service', t => {
@@ -41,16 +43,18 @@ test.before('should statically create service', t => {
   const services = require('./static/helloworld_grpc_pb')
 
   function sayHello (call, callback) {
-    var reply = new messages.HelloReply()
+    const reply = new messages.HelloReply()
     reply.setMessage('Hello ' + call.request.getName())
     callback(null, reply)
   }
 
-  var server = new grpc.Server()
+  const server = new grpc.Server()
   server.addService(services.GreeterService, { sayHello: sayHello })
-  server.bind(STATIC_HOST, grpc.ServerCredentials.createInsecure())
-  server.start()
-  apps.push(server)
+  server.bindAsync(STATIC_HOST, grpc.ServerCredentials.createInsecure(), err => {
+    t.falsy(err)
+    server.start()
+    apps.push(server)
+  })
 })
 
 test.cb('call dynamic service using callback', t => {

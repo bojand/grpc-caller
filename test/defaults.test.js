@@ -1,9 +1,9 @@
-import test from 'ava'
-import path from 'path'
-import async from 'async'
-import grpc from 'grpc'
+const grpc = require('@grpc/grpc-js')
 
-import caller from '../'
+const caller = require('../')
+const test = require('ava')
+const path = require('path')
+const async = require('async')
 
 const PROTO_PATH = path.resolve(__dirname, './protos/helloworld.proto')
 
@@ -24,8 +24,8 @@ test.before('start test servic', t => {
   const services = require('./static/helloworld_grpc_pb')
 
   function sayHello (call, callback) {
-    var reply = new messages.HelloReply()
-    var responceMessage = ''
+    const reply = new messages.HelloReply()
+    let responceMessage = ''
 
     if (call.metadata.get('foo').length > 0) { responceMessage = `${call.metadata.get('foo')} -> ${responceMessage}` }
 
@@ -37,11 +37,13 @@ test.before('start test servic', t => {
     callback(null, reply)
   }
 
-  var server = new grpc.Server()
+  const server = new grpc.Server()
   server.addService(services.GreeterService, { sayHello: sayHello })
-  server.bind(TEST_HOST, grpc.ServerCredentials.createInsecure())
-  server.start()
-  apps.push(server)
+  server.bindAsync(TEST_HOST, grpc.ServerCredentials.createInsecure(), err => {
+    t.falsy(err)
+    server.start()
+    apps.push(server)
+  })
 })
 
 test.cb('should pass default metadata', t => {

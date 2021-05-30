@@ -1,8 +1,8 @@
-import _ from 'lodash'
-import test from 'ava'
-import path from 'path'
-import async from 'async'
-import grpc from 'grpc'
+const _ = require('lodash')
+const test = require('ava')
+const path = require('path')
+const async = require('async')
+const grpc = require('@grpc/grpc-js')
 
 const protoLoader = require('@grpc/proto-loader')
 
@@ -51,9 +51,11 @@ test.before('should dynamically create service', t => {
 
   const server = new grpc.Server()
   server.addService(argProto.ArgService.service, { doSomething })
-  server.bind(DYNAMIC_HOST, grpc.ServerCredentials.createInsecure())
-  server.start()
-  apps.push(server)
+  server.bindAsync(DYNAMIC_HOST, grpc.ServerCredentials.createInsecure(), err => {
+    t.falsy(err)
+    server.start()
+    apps.push(server)
+  })
 })
 
 test.cb('call service using callback and just an argument', t => {
@@ -295,7 +297,7 @@ test('Request API: with metadata option', async t => {
   t.truthy(res.metadata)
   const md1 = res.metadata.getMap()
   const expectedMd = { headermd: 'headerValue' }
-  t.deepEqual(md1, expectedMd)
+  t.is(md1.headermd, expectedMd.headermd)
 
   t.falsy(res.status)
   const { response } = res
@@ -325,7 +327,7 @@ test('Request API: with status option', async t => {
   t.truthy(res.status.metadata)
   const md1 = res.status.metadata.getMap()
   const expectedMd = { trailermd: 'trailerValue' }
-  t.deepEqual(md1, expectedMd)
+  t.is(md1.headermd, expectedMd.headermd)
 
   const { response } = res
   t.truthy(response)
@@ -351,7 +353,7 @@ test('Request API: with metadata and status option', async t => {
   t.truthy(res.metadata)
   const md1 = res.metadata.getMap()
   const expectedMd = { headermd: 'headerValue' }
-  t.deepEqual(md1, expectedMd)
+  t.is(md1.headermd, expectedMd.headermd)
 
   t.truthy(res.status)
   t.is(res.status.code, 0)
@@ -385,7 +387,7 @@ test.cb('Request API: with metadata and status option with callback', t => {
     t.truthy(res.metadata)
     const md1 = res.metadata.getMap()
     const expectedMd = { headermd: 'headerValue' }
-    t.deepEqual(md1, expectedMd)
+    t.is(md1.headermd, expectedMd.headermd)
 
     t.truthy(res.status)
     t.is(res.status.code, 0)

@@ -1,8 +1,8 @@
-import _ from 'lodash'
-import test from 'ava'
-import path from 'path'
-import async from 'async'
-import grpc from 'grpc'
+const _ = require('lodash')
+const test = require('ava')
+const path = require('path')
+const async = require('async')
+const grpc = require('@grpc/grpc-js')
 
 const protoLoader = require('@grpc/proto-loader')
 
@@ -58,9 +58,11 @@ test.before('should dynamically create service', t => {
 
   const server = new grpc.Server()
   server.addService(argProto.ArgService.service, { doSomething })
-  server.bind(DYNAMIC_HOST, grpc.ServerCredentials.createInsecure())
-  server.start()
-  apps.push(server)
+  server.bindAsync(DYNAMIC_HOST, grpc.ServerCredentials.createInsecure(), err => {
+    t.falsy(err)
+    server.start()
+    apps.push(server)
+  })
 })
 
 test.serial.cb('Retry: call service using retry option and callback', t => {
@@ -162,7 +164,7 @@ test.serial('Request API with retry: call service using async with metadata and 
   t.truthy(res.metadata)
   const md1 = res.metadata.getMap()
   const expectedMd = { headermd: 'headerValue' }
-  t.deepEqual(md1, expectedMd)
+  t.is(md1.headermd, expectedMd.headermd)
 
   t.truthy(res.status)
   t.is(res.status.code, 0)

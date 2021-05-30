@@ -1,8 +1,8 @@
-import _ from 'lodash'
-import test from 'ava'
-import path from 'path'
-import async from 'async'
-import grpc from 'grpc'
+const _ = require('lodash')
+const test = require('ava')
+const path = require('path')
+const async = require('async')
+const grpc = require('@grpc/grpc-js')
 
 const protoLoader = require('@grpc/proto-loader')
 
@@ -76,9 +76,11 @@ test.before('should dynamically create service', t => {
 
   const server = new grpc.Server()
   server.addService(argProto.ArgService.service, { writeStuff })
-  server.bind(DYNAMIC_HOST, grpc.ServerCredentials.createInsecure())
-  server.start()
-  apps.push(server)
+  server.bindAsync(DYNAMIC_HOST, grpc.ServerCredentials.createInsecure(), err => {
+    t.falsy(err)
+    server.start()
+    apps.push(server)
+  })
 })
 
 test.cb('Reqres: call service using just an argument', t => {
@@ -421,7 +423,7 @@ test('Request API: async call with metadata options', async t => {
   t.truthy(res.metadata)
   const md1 = res.metadata.getMap()
   const expectedMd = { headermd: 'headerValue' }
-  t.deepEqual(md1, expectedMd)
+  t.is(md1.headermd, expectedMd.headermd)
 
   t.falsy(res.status)
 
@@ -453,7 +455,7 @@ test.cb('Request API: callback call with metadata options', t => {
     t.truthy(res.metadata)
     const md1 = res.metadata.getMap()
     const expectedMd = { headermd: 'headerValue' }
-    t.deepEqual(md1, expectedMd)
+    t.is(md1.headermd, expectedMd.headermd)
 
     t.falsy(res.status)
 
@@ -504,7 +506,7 @@ test('Request API: async call with status options', async t => {
   t.truthy(res.metadata)
   const md1 = res.metadata.getMap()
   const expectedMd = { headermd: 'headerValue' }
-  t.deepEqual(md1, expectedMd)
+  t.is(md1.headermd, expectedMd.headermd)
 
   t.truthy(res.status)
   t.is(res.status.code, 0)
@@ -543,7 +545,7 @@ test.cb('Request API: callback call with status options', t => {
     t.truthy(res.metadata)
     const md1 = res.metadata.getMap()
     const expectedMd = { headermd: 'headerValue' }
-    t.deepEqual(md1, expectedMd)
+    t.is(md1.headermd, expectedMd.headermd)
 
     t.truthy(res.status)
     t.is(res.status.code, 0)
@@ -603,7 +605,7 @@ test('Request API: async call with metadata and status options', async t => {
   t.truthy(res.status.metadata)
   const md1 = res.status.metadata.getMap()
   const expectedMd = { trailermd: 'trailerValue' }
-  t.deepEqual(md1, expectedMd)
+  t.is(md1.headermd, expectedMd.headermd)
 
   const { response } = res
 
