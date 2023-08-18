@@ -27,10 +27,10 @@
     "client"
   ],
   "dependencies": {
-    "@grpc/proto-loader": "^0.6.0",
+    "@grpc/proto-loader": "^0.7.8",
     "async": "^3.1.0",
-    "call-me-maybe": "^1.0.1",
-    "grpc-create-metadata": "^4.0.0",
+    "call-me-maybe": "^1.0.2",
+    "grpc-create-metadata": "^4.0.1",
     "grpc-inspect": "^0.6.0",
     "lodash": "^4.17.14",
     "promisify-call": "^2.0.0"
@@ -39,11 +39,11 @@
     "@grpc/grpc-js": "^1.2.5"
   },
   "devDependencies": {
+    "@grpc/grpc-js": "^1.9.0",
     "ava": "^3.15.0",
-    "google-protobuf": "^3.8.0",
-    "@grpc/grpc-js": "^1.2.5",
-    "jsdoc-to-markdown": "^7.0.0",
-    "standard": "^16.0.0"
+    "google-protobuf": "^3.21.2",
+    "jsdoc-to-markdown": "^8.0.0",
+    "standard": "^17.1.0"
   },
   "directories": {
     "test": "test"
